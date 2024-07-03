@@ -97,3 +97,18 @@ export const stormGrey = {
   900: '#212636',
   950: '#121621',
 } satisfies PaletteRange;
+
+export const gold = {
+  50: '#fff8e5',  
+  100: '#ffedcc', 
+  200: '#ffdb99', 
+  300: '#ffc966', 
+  400: '#ffb733', 
+  500: '#bb8a1b', 
+  600: '#a37b18', 
+  700: '#8a6a15',
+  800: '#725811', 
+  900: '#5a470e', 
+  950: '#3b2f09', 
+} satisfies PaletteRange;
+

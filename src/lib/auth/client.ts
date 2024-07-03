@@ -1,6 +1,8 @@
 'use client';
 
+import { AirTableResponse, UserFields } from '@/types/api';
 import type { User } from '@/types/user';
+import axios, { AxiosResponse } from 'axios';
 
 function generateToken(): string {
   const arr = new Uint8Array(12);
@@ -8,13 +10,7 @@ function generateToken(): string {
   return Array.from(arr, (v) => v.toString(16).padStart(2, '0')).join('');
 }
 
-const user = {
-  id: 'USR-000',
-  avatar: '/assets/avatar.png',
-  firstName: 'Sofia',
-  lastName: 'Rivers',
-  email: 'sofia@devias.io',
-} satisfies User;
+
 
 export interface SignUpParams {
   firstName: string;
@@ -28,7 +24,7 @@ export interface SignInWithOAuthParams {
 }
 
 export interface SignInWithPasswordParams {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -52,17 +48,36 @@ class AuthClient {
   }
 
   async signInWithPassword(params: SignInWithPasswordParams): Promise<{ error?: string }> {
-    const { email, password } = params;
+    const { username, password } = params;
 
     // Make API request
 
     // We do not handle the API, so we'll check if the credentials match with the hardcoded ones.
-    if (email !== 'sofia@devias.io' || password !== 'Secret1') {
+    // TODO: Use logic to check if the credentials are correct.
+    const BASE_ID = 'appEQcT7KVwO2DwLF';
+    const API_KEY = 'patMNm1Xx8ST36DVz.e09ada4ea673bb5e9ab352efd17bda71179a735a43c2e56d53fe83fda0c4e4b0';
+    const userTable = 'tblFZAvuMK8sLh6jf';
+    const SEARCH = `SEARCH('${username}'%2C+%7BUsername%7D)`;
+    const URL_AIRTABLE = `https://api.airtable.com/v0/${BASE_ID}`;
+    const USER_ENDPOINT =`/${userTable}?filterByFormula=${SEARCH}`
+    axios.defaults.baseURL = URL_AIRTABLE;
+    axios.defaults.headers.post['Content-Type'] = 'application/json';
+    axios.defaults.headers['Authorization'] = `Bearer ${API_KEY}`;
+   
+    const {data: {records}} = await axios.get<AxiosResponse<AirTableResponse<UserFields>>,{data:AirTableResponse<UserFields>}>(USER_ENDPOINT)
+  
+    if (username !== records[0].fields.username || password !==  records[0].fields.password) {
       return { error: 'Invalid credentials' };
+    }  
+    const user = {
+      id: records[0].id,
+      name: records[0].fields.username,
+      avatar: records[0].fields.avatar,
+      email: records[0].fields.email,
     }
-
     const token = generateToken();
     localStorage.setItem('custom-auth-token', token);
+    localStorage.setItem('user', JSON.stringify(user));
 
     return {};
   }
@@ -80,12 +95,12 @@ class AuthClient {
 
     // We do not handle the API, so just check if we have a token in localStorage.
     const token = localStorage.getItem('custom-auth-token');
-
+    const user = localStorage.getItem('user');
     if (!token) {
       return { data: null };
     }
 
-    return { data: user };
+    return { data: user ? JSON.parse(user) : null};
   }
 
   async signOut(): Promise<{ error?: string }> {
