@@ -27,7 +27,7 @@ const schema = zod.object({
   password: zod.string().min(1, { message: 'Password is required' }),
 });
 
-type Values = zod.infer<typeof schema>;
+export type Credentials = zod.infer<typeof schema>;
 
 export function SignInForm(): React.JSX.Element {
   const router = useRouter();
@@ -43,10 +43,10 @@ export function SignInForm(): React.JSX.Element {
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm<Values>({ resolver: zodResolver(schema) });
+  } = useForm<Credentials>({ resolver: zodResolver(schema) });
 
   const onSubmit = React.useCallback(
-    async (values: Values): Promise<void> => {
+    async (values: Credentials): Promise<void> => {
       setIsPending(true);
 
       const { error } = await authClient.signInWithPassword(values);

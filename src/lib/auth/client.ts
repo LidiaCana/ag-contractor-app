@@ -1,8 +1,9 @@
 'use client';
-
+import axiosInstance from '@/api/axiosConfig';
+import { ENDPOINTS_AIRTABLE } from '@/api/endpoints';
 import { AirTableResponse, UserFields } from '@/types/api';
 import type { User } from '@/types/user';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 
 function generateToken(): string {
   const arr = new Uint8Array(12);
@@ -50,23 +51,9 @@ class AuthClient {
   async signInWithPassword(params: SignInWithPasswordParams): Promise<{ error?: string }> {
     const { username, password } = params;
 
-    // Make API request
-
-    // We do not handle the API, so we'll check if the credentials match with the hardcoded ones.
-    // TODO: Use logic to check if the credentials are correct.
-    const BASE_ID = 'appEQcT7KVwO2DwLF';
-    const API_KEY = 'patMNm1Xx8ST36DVz.e09ada4ea673bb5e9ab352efd17bda71179a735a43c2e56d53fe83fda0c4e4b0';
-    const userTable = 'tblFZAvuMK8sLh6jf';
-    const SEARCH = `SEARCH('${username}'%2C+%7BUsername%7D)`;
-    const URL_AIRTABLE = `https://api.airtable.com/v0/${BASE_ID}`;
-    const USER_ENDPOINT =`/${userTable}?filterByFormula=${SEARCH}`
-    axios.defaults.baseURL = URL_AIRTABLE;
-    axios.defaults.headers.post['Content-Type'] = 'application/json';
-    axios.defaults.headers['Authorization'] = `Bearer ${API_KEY}`;
-   
-    const {data: {records}} = await axios.get<AxiosResponse<AirTableResponse<UserFields>>,{data:AirTableResponse<UserFields>}>(USER_ENDPOINT)
+    const {data: {records}} = await axiosInstance.get<AxiosResponse<AirTableResponse<UserFields>>,{data:AirTableResponse<UserFields>}>(ENDPOINTS_AIRTABLE.login({username, password}));
   
-    if (username !== records[0].fields.username || password !==  records[0].fields.password) {
+    if (records.length === 0) {
       return { error: 'Invalid credentials' };
     }  
     const user = {
