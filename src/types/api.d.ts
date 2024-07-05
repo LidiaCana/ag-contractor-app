@@ -6,7 +6,40 @@ export interface UserFields {
     email: string;
     "id (from Role)": number[];  
 }
+export interface ProjectFields {
+    start_date: string;
+    ProjectAttendance: string[];
+    status: string;
+    end_date: string;
+    contractor: string;
+    supervisor: string[];
+    name: string;
+    client: string;
+    address: string;
+    nameFromSupervisor: string[];
+  }
+  
 
+export interface EmployeeFields {
+    email: string;
+    Projects: string[];
+    role: string[];
+    name: string;
+    nameFromRole: string[];
+  }
+export interface SubcontractorFields {
+    name: string;
+    phone: string; 
+}
+export interface AttendeeFields {
+    name: string;
+    project: string;
+    date: string;
+    subcontractor: string;
+    hours_worked: number;
+    is_employee: boolean;
+    signature: string;
+  }
 export interface Record<T> {
     id: string;
     createdTime: string;
