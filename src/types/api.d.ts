@@ -39,6 +39,11 @@ export interface AttendeeFields {
     hours_worked: number;
     is_employee: boolean;
     signature: string;
+   
+  }
+export interface AttendeeResponseFields extends AttendeeFields {
+  "name (from project)": string;
+  "name (from subcontractor)": string;
   }
 export interface Record<T> {
     id: string;
@@ -47,4 +52,5 @@ export interface Record<T> {
 }
 export interface AirTableResponse<T> {
     records: Record<T>[]; 
+    offset?: string;
 }
