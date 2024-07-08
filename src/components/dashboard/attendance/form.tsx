@@ -35,7 +35,7 @@ export function AttendanceForm(): React.JSX.Element {
   const [subcontractors, setSubcontractors] = React.useState<Record<SubcontractorFields>[] | []>([]);
   const [isEmployee, setIsEmployee] = React.useState(false);
   const date = dayjs();
-  const { control, handleSubmit, setError } = useForm<AttendeeFields>();
+  const { control, handleSubmit, setError, reset } = useForm<AttendeeFields>();
 
   const getEmployees = async (): Promise<void> => {
     try {
@@ -64,8 +64,16 @@ export function AttendanceForm(): React.JSX.Element {
       logger.error(error);
     }
   };
-  const handleOnClear = (): void => {
+  const handleOnClearSignature = (): void => {
     signaturePadRef.current?.clear();
+  };
+  const handleClearForm = (): void => {
+    signaturePadRef.current?.clear();
+    reset({
+      name: '',
+      project: '',
+      subcontractor: '',
+    });
   };
   const getSignature = (): string => {
     if (signaturePadRef.current) {
@@ -78,28 +86,30 @@ export function AttendanceForm(): React.JSX.Element {
     async (values: AttendeeFields) => {
       setIsLoaded(true);
       const data = {
-        name: values.name,
+        name: isEmployee ? employees[Number(values.name)].label : values.name,
         project: values.project,
-        date: values.date,
-        subcontractor: values.subcontractor || '',
+        date: date.format('YYYY-MM-DD'),
+        subcontractor: values.subcontractor || 'recXKYVX6NajxxM4r',
         is_employee: isEmployee,
         signature: getSignature(),
         hours_worked: 8,
       };
       try {
-        const response = await AttendanceService.createAttendance(data);
-        logger.debug(response);
+        await AttendanceService.createAttendance(data);
+        setIsLoaded(false);
+        handleClearForm();
       } catch (error) {
         setError('name', { message: 'Error' });
       }
     },
-    [setError]
+    [setError, isEmployee]
   );
   React.useEffect(() => {
     void getProjects();
     void getEmployees();
     void getSubcontractors();
   }, []);
+
   return (
     <Card>
       <CardHeader subheader="The information can be edited" title="New Attendance" />
@@ -131,6 +141,7 @@ export function AttendanceForm(): React.JSX.Element {
                     )}
                     {isEmployee ? (
                       <Autocomplete
+                        {...field}
                         disablePortal
                         id="combo-box-demo"
                         options={employees ?? []}
@@ -202,10 +213,10 @@ export function AttendanceForm(): React.JSX.Element {
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="outlined" onClick={handleOnClear} disabled={isLoaded}>
+          <Button variant="outlined" onClick={handleOnClearSignature}>
             Clear Signature
           </Button>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" disabled={isLoaded}>
             Save
           </Button>
         </CardActions>

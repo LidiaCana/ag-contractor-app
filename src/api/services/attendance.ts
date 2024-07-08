@@ -1,16 +1,17 @@
 import { type AxiosResponse } from 'axios';
 import axiosInstance from '@/api/axiosConfig';
-import { type AirTableResponse, type AttendeeFields, type Record } from '@/types/api';
+import { type AttendeeResponseFields, type AirTableResponse, type AttendeeFields, type Record } from '@/types/api';
 import { ENDPOINTS_AIRTABLE } from '@/api/endpoints';
 import { logger } from '@/lib/default-logger';
+import { toast } from 'react-toastify';
 
 class AttendanceService {
-    async getAttendance(): Promise<Record<AttendeeFields>[]> {
+    async getAttendance(offset?:string ): Promise<Record<AttendeeResponseFields>[]> {
         try {
             const { data } = await axiosInstance.get<
-              AxiosResponse<AirTableResponse<AttendeeFields>>,
-              { data: AirTableResponse<AttendeeFields> }
-            >(ENDPOINTS_AIRTABLE.getAttendance());
+              AxiosResponse<AirTableResponse<AttendeeResponseFields>>,
+              { data: AirTableResponse<AttendeeResponseFields> }
+            >(`${ENDPOINTS_AIRTABLE.getAttendance()}${offset ? `?offset=${offset}` : ''}`);
             return (data.records); // Update the type of the argument
           } catch (error) {
             this.handleError(error as never);
@@ -18,10 +19,10 @@ class AttendanceService {
           }
       
     }
-    async createAttendance(data: AttendeeFields): Promise<string> {
+    async createAttendance(data: AttendeeFields): Promise<void> {
         try {
             const fields = {
-                       "name": data.name,
+                    "name": data.name,
                     "project": [
                      data.project
                     ],
@@ -34,7 +35,8 @@ class AttendanceService {
                   
             }
             const response  =await axiosInstance.post(ENDPOINTS_AIRTABLE.createAttendance(), { fields }); 
-            return response.status===200?'success':'error';
+            
+             response.status===200? toast.success('New Attendance created'):toast.error('error');
           } catch (error) {
             this.handleError(error as never);
             throw error;
@@ -42,10 +44,11 @@ class AttendanceService {
     }
     private handleError(error: never): void {
         if (error) {
-          // toast.error(`Error: ${error.response?.data.message || error.message}`);
-          logger.error(error);
+           toast.error(`Error: `);
+          
+     
         } else {
-          // toast.error('An unexpected error occurred');
+          toast.error('An unexpected error occurred');
           logger.error('An unexpected error occurred');
         }
       }
