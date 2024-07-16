@@ -1,4 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-unused-vars -- disabled because I don't wanna modify the enter component props*/
+/* eslint-disable @typescript-eslint/no-unused-vars -- disabled because I don't wanna modify the enter component props*/
+/* eslint-disable @typescript-eslint/no-explicit-any  -- disable rule to allow any for key*/
 'use client';
 
 import * as React from 'react';
@@ -11,14 +13,14 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TablePagination from '@mui/material/TablePagination';
+// import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
 import EnhancedTableHead from './head';
 import TableToolbar from './toolbar';
 import { type HeadCell } from './type';
 
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+function descendingComparator<T>(a: T, b: T, orderBy: keyof T): number {
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -61,7 +63,7 @@ interface TableProps {
   headCells: HeadCell[];
 }
 function CustomTable(props: TableProps): React.JSX.Element {
-  const { rows = [], page = 0, rowsPerPage = 0, onChangePage, onChangeRowsPerPage, headCells } = props;
+  const { rows = [], page = 0, rowsPerPage = 200, onChangePage, onChangeRowsPerPage, headCells } = props;
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<string>('id');
   const [selected, setSelected] = React.useState<(number | string)[]>([]);
@@ -137,7 +139,7 @@ function CustomTable(props: TableProps): React.JSX.Element {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
+        {/* <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={rows.length}
@@ -145,7 +147,7 @@ function CustomTable(props: TableProps): React.JSX.Element {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+        /> */}
       </Paper>
       <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
     </Box>

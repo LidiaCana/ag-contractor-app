@@ -45,6 +45,12 @@ export interface AttendeeResponseFields extends AttendeeFields {
   "name (from project)": string;
   "name (from subcontractor)": string;
   }
+
+  export interface UpdateScheduleAttendeeFields {
+      "check-in": number;
+      "check-out": number;
+      status: string;
+  }
 export interface Record<T> {
     id: string;
     createdTime: string;

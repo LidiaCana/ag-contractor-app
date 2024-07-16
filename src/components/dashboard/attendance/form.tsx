@@ -24,13 +24,13 @@ import dayjs from 'dayjs';
 import { Controller, useForm } from 'react-hook-form';
 import SignaturePad from 'react-signature-pad-wrapper';
 
-import { type AttendeeFields, type ProjectFields, type Record, type SubcontractorFields } from '@/types/api';
+import { type AttendeeFields, type Record, type SubcontractorFields } from '@/types/api';
 import { logger } from '@/lib/default-logger';
 
-export function AttendanceForm(): React.JSX.Element {
+export function AttendanceForm({ idProject }: { idProject: string }): React.JSX.Element {
   const signaturePadRef = React.useRef<SignaturePad>(null);
   const [isLoaded, setIsLoaded] = React.useState(false);
-  const [projects, setProjects] = React.useState<Record<ProjectFields>[] | null>(null);
+  const [project, setProject] = React.useState<{ id: string; name: string }>({ id: '', name: '' });
   const [employees, setEmployees] = React.useState<{ id: string; label: string }[] | []>([]);
   const [subcontractors, setSubcontractors] = React.useState<Record<SubcontractorFields>[] | []>([]);
   const [isEmployee, setIsEmployee] = React.useState(false);
@@ -48,10 +48,14 @@ export function AttendanceForm(): React.JSX.Element {
       logger.error('error');
     }
   };
-  const getProjects = async (): Promise<void> => {
+  const getProject = async (): Promise<void> => {
     try {
       const data = await ProjectService.getProjects();
-      setProjects(data);
+      const selectedProject = data.find((item) => item.id === idProject);
+      logger.debug({ selectedProject });
+      if (selectedProject) {
+        setProject({ id: selectedProject?.id, name: selectedProject?.fields.name });
+      }
     } catch (error) {
       logger.error(error);
     }
@@ -71,7 +75,6 @@ export function AttendanceForm(): React.JSX.Element {
     signaturePadRef.current?.clear();
     reset({
       name: '',
-      project: '',
       subcontractor: '',
     });
   };
@@ -87,7 +90,7 @@ export function AttendanceForm(): React.JSX.Element {
       setIsLoaded(true);
       const data = {
         name: isEmployee ? employees[Number(values.name)].label : values.name,
-        project: values.project,
+        project: idProject,
         date: date.format('YYYY-MM-DD'),
         subcontractor: values.subcontractor || 'recXKYVX6NajxxM4r',
         is_employee: isEmployee,
@@ -105,9 +108,9 @@ export function AttendanceForm(): React.JSX.Element {
     [setError, isEmployee]
   );
   React.useEffect(() => {
-    void getProjects();
     void getEmployees();
     void getSubcontractors();
+    void getProject();
   }, []);
 
   return (
@@ -160,13 +163,21 @@ export function AttendanceForm(): React.JSX.Element {
                 render={({ field }) => (
                   <FormControl fullWidth>
                     <InputLabel>Project</InputLabel>
-                    <Select {...field} label="Project" name="project" variant="outlined">
+                    <OutlinedInput
+                      {...field}
+                      label="Project"
+                      name="project"
+                      type="text"
+                      disabled
+                      defaultValue={project.name}
+                    />
+                    {/* <Select {...field} label="Project" name="project" variant="outlined">
                       {projects?.map((option) => (
                         <MenuItem key={option.id} value={option.id}>
                           {option.fields.name}
                         </MenuItem>
                       ))}
-                    </Select>
+                    </Select> */}
                   </FormControl>
                 )}
               />

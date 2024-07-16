@@ -2,8 +2,9 @@
 
 import * as React from 'react';
 import AttendanceService from '@/api/services/attendance';
+import { CircularProgress } from '@mui/material';
 
-import { type AttendeeFields } from '@/types/api';
+import { AttendeeResponseFields, type AttendeeFields } from '@/types/api';
 import { logger } from '@/lib/default-logger';
 import CustomTable from '@/components/core/table';
 
@@ -23,6 +24,7 @@ interface Data extends AttendanceData {
 
 export default function AttendanceTable(): React.ReactElement {
   const [rows, setRows] = React.useState<Data[]>([]);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const handleOnChangePage = (e: unknown, newPage: number): void => {
     logger.debug(newPage);
   };
@@ -31,8 +33,9 @@ export default function AttendanceTable(): React.ReactElement {
   };
 
   const getData = async (): Promise<void> => {
+    setIsLoading(true);
     try {
-      const response = await AttendanceService.getAttendance();
+      const response = await AttendanceService.getAttendance<AttendeeResponseFields>();
       const data = response.map((record) => {
         return {
           id: record.id,
@@ -45,6 +48,7 @@ export default function AttendanceTable(): React.ReactElement {
       });
 
       setRows(data);
+      setIsLoading(false);
     } catch (error) {
       logger.error(error);
     }
@@ -53,11 +57,17 @@ export default function AttendanceTable(): React.ReactElement {
     void getData();
   }, []);
   return (
-    <CustomTable
-      headCells={headCells}
-      rows={rows}
-      onChangePage={handleOnChangePage}
-      onChangeRowsPerPage={handleOnChangeRowsPerPage}
-    />
+    <>
+      {isLoading ? (
+        <CircularProgress />
+      ) : (
+        <CustomTable
+          headCells={headCells}
+          rows={rows}
+          onChangePage={handleOnChangePage}
+          onChangeRowsPerPage={handleOnChangeRowsPerPage}
+        />
+      )}
+    </>
   );
 }

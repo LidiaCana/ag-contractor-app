@@ -1,17 +1,17 @@
 import { type AxiosResponse } from 'axios';
 import axiosInstance from '@/api/axiosConfig';
-import { type AttendeeResponseFields, type AirTableResponse, type AttendeeFields, type Record } from '@/types/api';
+import { type AirTableResponse, type AttendeeFields, type Record, type UpdateScheduleAttendeeFields } from '@/types/api';
 import { ENDPOINTS_AIRTABLE } from '@/api/endpoints';
 import { logger } from '@/lib/default-logger';
 import { toast } from 'react-toastify';
 
 class AttendanceService {
-    async getAttendance(offset?:string ): Promise<Record<AttendeeResponseFields>[]> {
+    async getAttendance<T>( query?: string ): Promise<Record<T>[]> {
         try {
             const { data } = await axiosInstance.get<
-              AxiosResponse<AirTableResponse<AttendeeResponseFields>>,
-              { data: AirTableResponse<AttendeeResponseFields> }
-            >(`${ENDPOINTS_AIRTABLE.getAttendance()}${offset ? `?offset=${offset}` : ''}`);
+              AxiosResponse<AirTableResponse<T>>,
+              { data: AirTableResponse<T> }
+            >(`${ENDPOINTS_AIRTABLE.getAttendance()}${query ? `?${query}` : ''}`);
             return (data.records); // Update the type of the argument
           } catch (error) {
             this.handleError(error as never);
@@ -19,6 +19,7 @@ class AttendanceService {
           }
       
     }
+
     async createAttendance(data: AttendeeFields): Promise<void> {
         try {
             const fields = {
@@ -42,9 +43,20 @@ class AttendanceService {
             throw error;
           }
     }
+    async updateSchedule(data: UpdateScheduleAttendeeFields[]): Promise<void> {
+      try {
+        logger.debug({data})
+          const response  =await axiosInstance.patch(ENDPOINTS_AIRTABLE.createAttendance(), { records: data }); 
+          
+           response.status===200? toast.success('Schedule sent'):toast.error('error');
+        } catch (error) {
+          this.handleError(error as never);
+          throw error;
+        }
+  }
     private handleError(error: never): void {
         if (error) {
-           toast.error(`Error: `);
+           toast.error(error);
           
      
         } else {

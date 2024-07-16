@@ -23,6 +23,10 @@ export const ENDPOINTS_AIRTABLE = {
          const attendanceTable = process.env.NEXT_PUBLIC_ATTENDANCE_TABLE || 'tblMuaNXl3N3Sh75S';
          return `/${attendanceTable}`
    },
+    getGroupsAttendance: () => {
+      const attendanceTable = process.env.NEXT_PUBLIC_ATTENDANCE_TABLE || 'tblMuaNXl3N3Sh75S';
+      return `/${attendanceTable}`
+},
    createAttendance: () => {
       const attendanceTable = process.env.NEXT_PUBLIC_ATTENDANCE_TABLE || 'tblMuaNXl3N3Sh75S';
       return `/${attendanceTable}`

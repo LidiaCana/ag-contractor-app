@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || '';
-const timeout = parseInt(process.env.NEXT_PUBLIC_API_TIMEOUT || '1000', 10);
+const timeout = parseInt(process.env.NEXT_PUBLIC_API_TIMEOUT || '10000', 10);
 const token = process.env.NEXT_PUBLIC_AIRTABLE_TOKEN || '';
 const axiosInstance: AxiosInstance = axios.create({
   baseURL,
