@@ -11,32 +11,26 @@ import { TimePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { Controller, useForm } from 'react-hook-form';
 
-import type { Record } from '@/types/api';
-import { logger } from '@/lib/default-logger';
+import type { Record, UpdateScheduleAttendeeFields } from '@/types/api';
 import { AttendanceGroups } from '@/components/dashboard/attendance/edit/attendance-groups';
 
+import type { AttendanceGroupInterface } from './type';
+
 // export const metadata = { title: `Reports | Dashboard | ${config.site.name}` } satisfies Metadata;
-interface AttendanceGroup {
-  name: string;
-  project: string[];
-  date: string;
-  subcontractor: string[];
-  'name (from project)': string;
-  'name (from subcontractor)': string;
-}
+
 interface SubmitHoursForm {
   checkIn: string;
   checkOut: string;
 }
 export default function Page(): React.JSX.Element {
-  const [groupsAttendance, setGroupsAttendance] = React.useState([]);
+  const [groupsAttendance, setGroupsAttendance] = React.useState<AttendanceGroupInterface[]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [groupSelected, setGroupSelected] = React.useState<number>(0);
 
   const { control, handleSubmit } = useForm<SubmitHoursForm>();
 
-  const groupData = (data: Record<AttendanceGroup>[]): never[] => {
-    const grouped: { [key: string]: Record<AttendanceGroup>[] } = {};
+  const groupData = (data: Record<AttendanceGroupInterface>[]): never[] => {
+    const grouped: { [key: string]: Record<AttendanceGroupInterface>[] } = {};
 
     data.forEach((item) => {
       // Assuming each record has exactly one project and subcontractor for simplicity
@@ -58,7 +52,7 @@ export default function Page(): React.JSX.Element {
   };
   const getData = async () => {
     setIsLoading(true);
-    const data = await AttendanceService.getAttendance<AttendanceGroup>(
+    const data = await AttendanceService.getAttendance<AttendanceGroupInterface>(
       'filterByFormula=AND({status}="open")&fields%5B%5D=name&fields%5B%5D=project&fields%5B%5D=date&fields%5B%5D=subcontractor&fields%5B%5D=name (from project)&fields%5B%5D=name (from subcontractor)'
     );
     const items = groupData(data);
@@ -73,10 +67,15 @@ export default function Page(): React.JSX.Element {
 
   const onSubmit = React.useCallback(
     async (values: SubmitHoursForm) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- safe to assume groupSelected is a number
       const attendance = groupsAttendance[groupSelected].attendance;
+      if (!attendance) {
+        return;
+      }
       const data = attendance.map((item) => {
         return {
-          id: item.id,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- safe to assume id is a string
+          id: item.id as string,
           fields: {
             'check-in': dayjs(values.checkIn).toISOString(),
             'check-out': dayjs(values.checkOut).toISOString(),
@@ -84,7 +83,7 @@ export default function Page(): React.JSX.Element {
           },
         };
       });
-      await AttendanceService.updateSchedule(data);
+      await AttendanceService.updateSchedule(data as unknown as UpdateScheduleAttendeeFields[]);
       setOpenModal(false);
       void getData();
     },

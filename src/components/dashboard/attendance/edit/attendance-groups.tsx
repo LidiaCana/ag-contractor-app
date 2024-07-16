@@ -1,4 +1,5 @@
 import * as React from 'react';
+import type { AttendanceGroupInterface } from '@/app/dashboard/attendance/edit/type';
 import TimerIcon from '@mui/icons-material/Timer';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -13,24 +14,19 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import dayjs from 'dayjs';
 
-import type { AttendeeResponseFields, Record } from '@/types/api';
+// import type { AttendeeResponseFields, Record } from '@/types/api';
 
-const statusMap = {
-  open: { label: 'Open', color: 'success' },
-} as const;
-
-export interface AttendanceGroup {
-  attendance: Record<AttendeeResponseFields>[];
-  subcontractor: string;
-  project: string;
-  status: 'open';
-  date: Date;
-  'name (from project)': string;
-  'name (from subcontractor)': string;
-}
+// export interface AttendanceGroup {
+//   attendance: Record<AttendeeResponseFields>[];
+//   subcontractor: string;
+//   project: string;
+//   date: Date;
+//   'name (from project)': string;
+//   'name (from subcontractor)': string;
+// }
 
 export interface AttendanceGroupProps {
-  groupsAttendance?: AttendanceGroup[];
+  groupsAttendance?: AttendanceGroupInterface[];
   onOpenModal: (index: number) => void;
 }
 
@@ -52,15 +48,13 @@ export function AttendanceGroups({ groupsAttendance = [], onOpenModal }: Attenda
           </TableHead>
           <TableBody>
             {groupsAttendance.map((group, index) => {
-              const { label, color } = statusMap[group.status] ?? { label: 'open', color: 'success' };
-
               return (
                 <TableRow key={`group-${index}`}>
                   <TableCell>{dayjs(group.date).format('MMM D, YYYY')}</TableCell>
                   <TableCell>{group['name (from subcontractor)']}</TableCell>
                   <TableCell>{group['name (from project)']}</TableCell>
                   <TableCell>
-                    <Chip color={color} label={label} size="small" />
+                    <Chip color="success" label="open" size="small" />
                   </TableCell>
                   <TableCell>
                     <IconButton
