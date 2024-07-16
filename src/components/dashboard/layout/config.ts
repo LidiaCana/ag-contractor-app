@@ -8,7 +8,7 @@ export const navItems = [
   { key: 'attendance-edit', title: 'Submit Hours', href: paths.dashboard.attendance.edit, icon: 'note-pencil' },
   { key: 'projects', title: 'Projects', href: paths.dashboard.projects, icon: 'building' },
   { key: 'employees', title: 'Employees', href: paths.dashboard.employees, icon: 'users' },
-  { key: 'settings', title: 'Settings', href: paths.dashboard.settings, icon: 'gear-six' },
-  { key: 'account', title: 'Account', href: paths.dashboard.account, icon: 'user' },
-  { key: 'error', title: 'Error', href: paths.errors.notFound, icon: 'x-square' },
+  // { key: 'settings', title: 'Settings', href: paths.dashboard.settings, icon: 'gear-six' },
+  // { key: 'account', title: 'Account', href: paths.dashboard.account, icon: 'user' },
+  // { key: 'error', title: 'Error', href: paths.errors.notFound, icon: 'x-square' },
 ] satisfies NavItemConfig[];
