@@ -21,7 +21,7 @@ export default function Page({ params }: { params: { id: string } }): React.JSX.
           <Typography variant="h4">Attendance</Typography>
           <Button
             component={RouterLink}
-            href={paths.dashboard.attendance}
+            href={paths.dashboard.attendance.new}
             startIcon={<ArrowLeftIcon fontSize="var(--icon-fontSize-md)" />}
             variant="contained"
           >

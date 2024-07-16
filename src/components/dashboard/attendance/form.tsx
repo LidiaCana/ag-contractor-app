@@ -5,7 +5,7 @@ import AttendanceService from '@/api/services/attendance';
 import EmployeeService from '@/api/services/employee';
 import ProjectService from '@/api/services/project';
 import subcontractorService from '@/api/services/subcontractor';
-import { Autocomplete, FormLabel, TextField } from '@mui/material';
+import { FormLabel } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -143,15 +143,20 @@ export function AttendanceForm({ idProject }: { idProject: string }): React.JSX.
                       </>
                     )}
                     {isEmployee ? (
-                      <Autocomplete
-                        {...field}
-                        disablePortal
-                        id="combo-box-demo"
-                        options={employees ?? []}
-                        sx={{ width: 300 }}
-                        renderInput={(params) => <TextField {...field} {...params} label="Name" />}
-                      />
-                    ) : null}
+                      <>
+                        <InputLabel>Name</InputLabel>
+                        <OutlinedInput {...field} label="Name" name="name" type="text" />
+                      </>
+                    ) : // TODO: fix this
+                    // <Autocomplete
+                    //   {...field}
+                    //   disablePortal
+                    //   id="combo-box-demo"
+                    //   options={employees ?? []}
+                    //   sx={{ width: 300 }}
+                    //   renderInput={(params) => <TextField {...params} label="Name" />}
+                    // />
+                    null}
                   </FormControl>
                 )}
               />

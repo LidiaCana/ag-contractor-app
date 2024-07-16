@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment -- For deploy*/
 'use client';
 import axiosInstance from '@/api/axiosConfig';
 import { ENDPOINTS_AIRTABLE } from '@/api/endpoints';
