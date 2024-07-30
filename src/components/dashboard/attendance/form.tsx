@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useRouter } from 'next/navigation';
 import AttendanceService from '@/api/services/attendance';
 import ProjectService from '@/api/services/project';
 import groupService from '@/api/services/subcontractor';
@@ -38,8 +39,8 @@ import { logger } from '@/lib/default-logger';
 interface AttendanceFormProps extends Omit<AttendeeFields, 'group'> {
   group: { id: string; name: string };
 }
-// TODO: Add type to the form Schedule checkin and checkout calculate hours from checkin and checkout less hr lunch
 export function AttendanceForm({ idProject }: { idProject: string }): React.JSX.Element {
+  const router = useRouter();
   const signaturePadRef = React.useRef<SignaturePad>(null);
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const [isLoaded, setIsLoaded] = React.useState(false);
@@ -124,7 +125,7 @@ export function AttendanceForm({ idProject }: { idProject: string }): React.JSX.
     try {
       await AttendanceService.createAttendance(request);
       setIsLoaded(false);
-      onClearForm();
+      router.push(`/dashboard/attendance/new`);
     } catch (error) {
       setError('name', { message: 'Error' });
     }
