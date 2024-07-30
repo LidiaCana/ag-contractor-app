@@ -9,8 +9,7 @@ export const paths = {
     clients: '/dashboard/clients',
     attendance: {
       new:'/dashboard/attendance/new',
-      report: '/dashboard/attendance/report',
-      edit: '/dashboard/attendance/edit',
+      report: '/dashboard/attendance/report'
     },
     settings: '/dashboard/settings',
   },
