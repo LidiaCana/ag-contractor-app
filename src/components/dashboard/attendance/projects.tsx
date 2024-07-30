@@ -30,7 +30,7 @@ export function ListProjects(): React.JSX.Element {
   }, []);
   const handleProjectClick = (projectId: string) => {
     // Set redux project
-    router.push(`/dashboard/form-attendance/${projectId}`);
+    router.push(`/dashboard/attendance/form-attendance/${projectId}`);
   };
   return (
     <>

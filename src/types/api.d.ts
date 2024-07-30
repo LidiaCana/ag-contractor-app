@@ -33,23 +33,18 @@ export interface SubcontractorFields {
 }
 export interface AttendeeFields {
     name: string;
-    project: string;
+    project: string | string[];
     date: string;
-    subcontractor: string;
-    hours_worked: number;
-    is_employee: boolean;
+    group: string[];
     signature: string;
+    "check-in": string;
+    "check-out": string;
    
   }
 export interface AttendeeResponseFields extends AttendeeFields {
   "name (from project)": string;
-  "name (from subcontractor)": string;
-  }
-
-  export interface UpdateScheduleAttendeeFields {
-      "check-in": number;
-      "check-out": number;
-      status: string;
+  "name (from group)": string;
+  hours_worked: number;
   }
 export interface Record<T> {
     id: string;

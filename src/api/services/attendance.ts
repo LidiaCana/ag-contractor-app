@@ -1,11 +1,19 @@
 import { type AxiosResponse } from 'axios';
 import axiosInstance from '@/api/axiosConfig';
-import { type AirTableResponse, type AttendeeFields, type Record, type UpdateScheduleAttendeeFields } from '@/types/api';
+import { type AirTableResponse, type AttendeeFields, type Record } from '@/types/api';
 import { ENDPOINTS_AIRTABLE } from '@/api/endpoints';
 import { logger } from '@/lib/default-logger';
 import { toast } from 'react-toastify';
 
 class AttendanceService {
+   chunkArray(array: never[], chunkSize: number): never[][] {
+    const result = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      const chunk = array.slice(i, i + chunkSize);
+      result.push(chunk);
+    }
+    return result;
+  }
     async getAttendance<T>( query?: string ): Promise<Record<T>[]> {
         try {
             const { data } = await axiosInstance.get<
@@ -20,40 +28,21 @@ class AttendanceService {
       
     }
 
-    async createAttendance(data: AttendeeFields): Promise<void> {
+    async createAttendance(data: {records:{fields : AttendeeFields}[]}): Promise<void> {
         try {
-            const fields = {
-                    "name": data.name,
-                    "project": [
-                     data.project
-                    ],
-                    "date": data.date,
-                    "hours_worked": 8,
-                    "subcontractor": [
-                      data.subcontractor
-                    ],
-                    "signature": data.signature
-                  
-            }
-            const response  =await axiosInstance.post(ENDPOINTS_AIRTABLE.createAttendance(), { fields }); 
-            
-             response.status===200? toast.success('New Attendance created'):toast.error('error');
+            const responses: AxiosResponse[] = [];
+            const chunkedAttendances = this.chunkArray(data.records as never, 10);
+          // logger.debug(request.length);
+          chunkedAttendances.forEach(async (records) => {
+              responses.push(await axiosInstance.post(ENDPOINTS_AIRTABLE.createAttendance(), {records}  )); 
+             })
+             responses.some((response) => response.status>=400)? toast.error('error'):toast.success('New Attendance created');
           } catch (error) {
             this.handleError(error as never);
             throw error;
           }
     }
-    async updateSchedule(data: UpdateScheduleAttendeeFields[]): Promise<void> {
-      try {
-        logger.debug({data})
-          const response  =await axiosInstance.patch(ENDPOINTS_AIRTABLE.createAttendance(), { records: data }); 
-          
-           response.status===200? toast.success('Schedule sent'):toast.error('error');
-        } catch (error) {
-          this.handleError(error as never);
-          throw error;
-        }
-  }
+
     private handleError(error: never): void {
         if (error) {
            toast.error(error);
