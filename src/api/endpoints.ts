@@ -7,7 +7,7 @@ export const ENDPOINTS_AIRTABLE = {
     const loginUrl =`/${userTable}?filterByFormula=${query}`
     return loginUrl
  },
- getProjects: () => {
+ Projects: () => {
     const projectsTable = process.env.NEXT_PUBLIC_AIRTABLE_PROJECTS_TABLE || 'tbl3rEng1xEXr3LcR';
     return `/${projectsTable}`
  }

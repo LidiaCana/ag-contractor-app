@@ -7,16 +7,16 @@ export interface UserFields {
     "id (from Role)": number[];  
 }
 export interface ProjectFields {
-    start_date: string;
-    ProjectAttendance: string[];
-    status: string;
-    end_date: string;
-    contractor: string;
-    supervisor: string[];
-    name: string;
-    client: string;
-    address: string;
-    nameFromSupervisor: string[];
+  name: string;
+  general_contractor: string;
+  contractor: string;
+  address: string;
+  project_manager: string;
+  competent_person: string;
+  start_date: string;
+  end_date?: string;
+  ProjectAttendance?: string[];
+  status?: string;
   }
   
 
