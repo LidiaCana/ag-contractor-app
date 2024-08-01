@@ -5,7 +5,7 @@ export const paths = {
     overview: '/dashboard',
     account: '/dashboard/account',
     projects: '/dashboard/projects',
-    employees: '/dashboard/employees',
+    groups: '/dashboard/groups',
     clients: '/dashboard/clients',
     attendance: {
       new:'/dashboard/attendance/new',
