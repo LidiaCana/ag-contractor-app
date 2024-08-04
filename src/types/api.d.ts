@@ -30,6 +30,7 @@ export interface EmployeeFields {
 export interface SubcontractorFields {
     name: string;
     phone: string; 
+    manager: string;
 }
 export interface AttendeeFields {
     name: string;

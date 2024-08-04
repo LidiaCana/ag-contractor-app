@@ -15,7 +15,7 @@ export const ENDPOINTS_AIRTABLE = {
       const employeesTable = process.env.NEXT_PUBLIC_EMPLOYEES_TABLE || 'tbl21mrDxINoJvHch';
       return `/${employeesTable}`
  }
-   , getSubcontractors: () => {
+   , Subcontractors: () => {
          const subcontractorsTable = process.env.NEXT_PUBLIC_SUBCONTRACTOR_TABLE || 'tbl3G90QbRyAAz067';
          return `/${subcontractorsTable}`
    }

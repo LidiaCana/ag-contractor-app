@@ -10,13 +10,26 @@ class SubcontractorService {
             const { data } = await axiosInstance.get<
               AxiosResponse<AirTableResponse<SubcontractorFields>>,
               { data: AirTableResponse<SubcontractorFields> }
-            >(ENDPOINTS_AIRTABLE.getSubcontractors());
+            >(ENDPOINTS_AIRTABLE.Subcontractors());
             return (data.records); // Update the type of the argument
           } catch (error) {
             this.handleError(error as never);
             throw error;
           }
       
+    }
+    async createSubcontractor(data: SubcontractorFields): Promise<Record<SubcontractorFields>> {
+        try {
+            const { data: {records} } = await axiosInstance.post<
+              AxiosResponse<Record<SubcontractorFields>>,
+              { data: {records: Record<SubcontractorFields>[]}  }
+            >(ENDPOINTS_AIRTABLE.Subcontractors(), { records: [{fields:data} ]});
+           
+            return records[0];
+          } catch (error) {
+            this.handleError(error as never);
+            throw error;
+          }
     }
     private handleError(error: never): void {
         if (error) {
