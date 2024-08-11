@@ -29,7 +29,7 @@
     "@mui/material": "5.15.20",
     "@mui/system": "5.15.20",
     "@mui/utils": "5.15.20",
-    "@mui/x-date-pickers": "7.7.1",
+    "@mui/x-date-pickers": "^7.12.1",
     "@phosphor-icons/react": "2.1.6",
     "apexcharts": "3.49.2",
     "axios": "^1.7.2",
@@ -41,6 +41,7 @@
     "react-hook-form": "7.52.0",
     "react-signature-pad-wrapper": "^4.0.1",
     "react-toastify": "^10.0.5",
+    "xlsx": "^0.18.5",
     "zod": "3.23.8"
   },
   "devDependencies": {
