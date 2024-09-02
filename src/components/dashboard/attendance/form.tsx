@@ -129,7 +129,7 @@ export function AttendanceForm({ idProject }: { idProject: string }): React.JSX.
     } catch (error) {
       setError('name', { message: 'Error' });
     }
-  }, [setError, employees]);
+  }, [setError, employees, schedule]);
 
   React.useEffect(() => {
     void getGroups();
