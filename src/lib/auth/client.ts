@@ -62,6 +62,7 @@ class AuthClient {
       name: records[0].fields.username,
       avatar: records[0].fields.avatar,
       email: records[0].fields.email,
+      role: records[0].fields["id (from Role)"][0],
     }
     const token = generateToken();
     localStorage.setItem('custom-auth-token', token);

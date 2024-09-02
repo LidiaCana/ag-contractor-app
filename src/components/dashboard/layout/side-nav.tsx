@@ -12,8 +12,10 @@ import Typography from '@mui/material/Typography';
 import { CaretUpDown as CaretUpDownIcon } from '@phosphor-icons/react/dist/ssr/CaretUpDown';
 
 import type { NavItemConfig } from '@/types/nav';
+import { User } from '@/types/user';
 import { paths } from '@/paths';
 import { isNavItemActive } from '@/lib/is-nav-item-active';
+import { useUser } from '@/hooks/use-user';
 import { Logo } from '@/components/core/logo';
 
 import { navItems } from './config';
@@ -21,7 +23,7 @@ import { navIcons } from './nav-icons';
 
 export function SideNav(): React.JSX.Element {
   const pathname = usePathname();
-
+  const { user } = useUser();
   return (
     <Box
       sx={{
@@ -78,7 +80,7 @@ export function SideNav(): React.JSX.Element {
       </Stack>
       <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />
       <Box component="nav" sx={{ flex: '1 1 auto', p: '12px' }}>
-        {renderNavItems({ pathname, items: navItems })}
+        {renderNavItems({ pathname, items: navItems, user })}
       </Box>
       <Divider sx={{ borderColor: 'var(--mui-palette-neutral-700)' }} />
       <Stack spacing={2} sx={{ p: '12px' }}>
@@ -114,11 +116,25 @@ export function SideNav(): React.JSX.Element {
   );
 }
 
-function renderNavItems({ items = [], pathname }: { items?: NavItemConfig[]; pathname: string }): React.JSX.Element {
+function renderNavItems({
+  items = [],
+  pathname,
+  user,
+}: {
+  items?: NavItemConfig[];
+  pathname: string;
+  user: User | null;
+}): React.JSX.Element {
   const children = items.reduce((acc: React.ReactNode[], curr: NavItemConfig): React.ReactNode[] => {
     const { key, ...item } = curr;
+    // Get user role
+    // Compare if the user role is in the permissions array
 
-    acc.push(<NavItem key={key} pathname={pathname} {...item} />);
+    if (user?.role) {
+      if (item.permissions && item.permissions.includes(user.role)) {
+        acc.push(<NavItem key={key} pathname={pathname} {...item} />);
+      }
+    }
 
     return acc;
   }, []);
