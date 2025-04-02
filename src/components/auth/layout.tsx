@@ -50,14 +50,14 @@ export function Layout({ children }: LayoutProps): React.JSX.Element {
               </Box>
             </Typography>
             <Typography align="center" variant="subtitle1">
-              Building dreams, one frame at a time, with unwavering commitment and expertise.{' '}
+              Helping to keep your world clean and germ free
             </Typography>
           </Stack>
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Box
               component="img"
               alt="Widgets"
-              src="/assets/ag/banner.webp"
+              src="https://precare-spaces.nyc3.cdn.digitaloceanspaces.com/h-slide-adult-washcloths7.jpg?mtime=20200617094112&focal=none"
               sx={{ height: 'auto', width: '100%', maxWidth: '600px' }}
             />
           </Box>

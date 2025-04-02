@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import { CaretUpDown as CaretUpDownIcon } from '@phosphor-icons/react/dist/ssr/CaretUpDown';
 
 import type { NavItemConfig } from '@/types/nav';
-import { User } from '@/types/user';
+import { type User } from '@/types/user';
 import { paths } from '@/paths';
 import { isNavItemActive } from '@/lib/is-nav-item-active';
 import { useUser } from '@/hooks/use-user';
@@ -131,7 +131,7 @@ function renderNavItems({
     // Compare if the user role is in the permissions array
 
     if (user?.role) {
-      if (item.permissions && item.permissions.includes(user.role)) {
+      if (item.permissions?.includes(user.role)) {
         acc.push(<NavItem key={key} pathname={pathname} {...item} />);
       }
     }

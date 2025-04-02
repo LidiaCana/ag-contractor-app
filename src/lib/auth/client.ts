@@ -2,9 +2,9 @@
 'use client';
 import axiosInstance from '@/api/axiosConfig';
 import { ENDPOINTS_AIRTABLE } from '@/api/endpoints';
-import { AirTableResponse, UserFields } from '@/types/api';
+import { type AirTableResponse, type UserFields } from '@/types/api';
 import type { User } from '@/types/user';
-import { AxiosResponse } from 'axios';
+import { type AxiosResponse } from 'axios';
 
 function generateToken(): string {
   const arr = new Uint8Array(12);
@@ -51,7 +51,7 @@ class AuthClient {
 
   async signInWithPassword(params: SignInWithPasswordParams): Promise<{ error?: string }> {
     const { username, password } = params;
-
+    
     const {data: {records}} = await axiosInstance.get<AxiosResponse<AirTableResponse<UserFields>>,{data:AirTableResponse<UserFields>}>(ENDPOINTS_AIRTABLE.login({username, password}));
   
     if (records.length === 0) {

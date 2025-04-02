@@ -1,7 +1,7 @@
 /* eslint-disable unicorn/filename-case -- for deploy */
 /* eslint-disable @typescript-eslint/prefer-promise-reject-errors -- for deploy */
-/* eslint-disable unicorn/filename-case -- For deploy*/
-import axios, { AxiosInstance } from 'axios';
+ 
+import axios, { type AxiosInstance } from 'axios';
 
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || '';
 const timeout = parseInt(process.env.NEXT_PUBLIC_API_TIMEOUT || '10000', 10);

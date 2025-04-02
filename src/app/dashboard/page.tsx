@@ -6,8 +6,6 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { config } from '@/config';
 import { logger } from '@/lib/default-logger';
 import { Budget } from '@/components/dashboard/overview/budget';
-import { LatestOrders } from '@/components/dashboard/overview/latest-orders';
-import { LatestProducts } from '@/components/dashboard/overview/latest-products';
 import { Sales } from '@/components/dashboard/overview/sales';
 import { TasksProgress } from '@/components/dashboard/overview/tasks-progress';
 import { TotalCustomers } from '@/components/dashboard/overview/total-customers';
@@ -20,9 +18,9 @@ interface Fields {
 }
 
 export default async function Page(): Promise<React.JSX.Element> {
-  let attendanceData = await AttendanceService.getAttendance<Fields>('fields%5B%5D=name (from group)');
+  const attendanceData = await AttendanceService.getAttendance<Fields>('fields%5B%5D=name (from group)');
 
-  let groupCount = attendanceData.reduce<Record<string, number>>((acc, group) => {
+  const groupCount = attendanceData.reduce<Record<string, number>>((acc, group) => {
     const name = group.fields['name (from group)'][0];
     acc[name] = (acc[name] || 0) + 1;
     return acc;

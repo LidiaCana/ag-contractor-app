@@ -76,7 +76,7 @@ export function MobileNav({ open, onClose }: MobileNavProps): React.JSX.Element 
             <Typography color="var(--mui-palette-neutral-400)" variant="body2">
               Workspace
             </Typography>
-            <Typography color="inherit" variant="subtitle1"></Typography>
+            <Typography color="inherit" variant="subtitle1" />
           </Box>
           <CaretUpDownIcon />
         </Box>

@@ -39,6 +39,7 @@
     "react-apexcharts": "1.4.1",
     "react-dom": "18.3.1",
     "react-hook-form": "7.52.0",
+    "react-qr-barcode-scanner": "^2.0.0",
     "react-signature-pad-wrapper": "^4.0.1",
     "react-toastify": "^10.0.5",
     "xlsx": "^0.18.5",
