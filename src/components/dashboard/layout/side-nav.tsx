@@ -72,7 +72,7 @@ export function SideNav(): React.JSX.Element {
               Workspace
             </Typography>
             <Typography color="inherit" variant="subtitle1">
-              AG contractor
+              Premier Care
             </Typography>
           </Box>
           <CaretUpDownIcon />

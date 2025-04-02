@@ -24,7 +24,7 @@ export function Logo({ color = 'dark', emblem, height = HEIGHT, width = WIDTH }:
   if (emblem) {
     url = color === 'light' ? '/assets/ag/logo-emblem.svg' : '/assets/logo-emblem--dark.svg';
   } else {
-    url = color === 'light' ? '/assets/ag/logo.png' : '/assets/ag/logo.png';
+    url = color === 'light' ? '/assets/precare/logo.jpeg' : '/assets/precare/logo.jpeg';
   }
 
   return <Box alt="logo" component="img" height={height} src={url} width={width} />;

@@ -19,6 +19,23 @@ interface Fields {
   'name (from group)': string[];
 }
 
+const machineParts = [
+  { id: 'PST-001', description: 'Piston', count: 20, cost: '$50', status: 'in stock' },
+  { id: 'SCR-002', description: 'Screw', count: 150, cost: '$0.5', status: 'in stock' },
+  { id: 'BLT-003', description: 'Bolt', count: 100, cost: '$0.75', status: 'in stock' },
+  { id: 'BRG-004', description: 'Bearing', count: 50, cost: '$15', status: 'low stock' },
+  { id: 'GEO-005', description: 'Gear', count: 30, cost: '$25', status: 'in stock' },
+  { id: 'PIN-006', description: 'Pin', count: 200, cost: '$0.2', status: 'in stock' },
+  { id: 'CHP-007', description: 'Chip', count: 40, cost: '$10', status: 'pending' },
+  { id: 'PIP-008', description: 'Pipe', count: 75, cost: '$5', status: 'in stock' },
+  { id: 'OIL-009', description: 'Lubricating Oil', count: 60, cost: '$30', status: 'low stock' },
+  { id: 'SPR-010', description: 'Spring', count: 90, cost: '$2', status: 'in stock' },
+  { id: 'VLV-011', description: 'Valve', count: 45, cost: '$18', status: 'pending' },
+  { id: 'BLD-012', description: 'Blade', count: 25, cost: '$12', status: 'in stock' },
+  { id: 'RLR-013', description: 'Roller', count: 35, cost: '$22', status: 'low stock' },
+  { id: 'CLT-014', description: 'Clutch', count: 15, cost: '$40', status: 'pending' },
+  { id: 'BRS-015', description: 'Brush', count: 80, cost: '$5', status: 'in stock' },
+];
 export default async function Page(): Promise<React.JSX.Element> {
   let attendanceData = await AttendanceService.getAttendance<Fields>('fields%5B%5D=name (from group)');
 
@@ -43,15 +60,7 @@ export default async function Page(): Promise<React.JSX.Element> {
       <Grid lg={3} sm={6} xs={12}>
         <TotalProfit sx={{ height: '100%' }} value="$15k" />
       </Grid>
-      <Grid lg={8} xs={12}>
-        <Sales
-          chartSeries={[
-            { name: 'This year', data: [18, 16, 5, 8, 3, 14, 14, 16, 17, 19, 18, 20] },
-            { name: 'Last year', data: [12, 11, 4, 6, 2, 9, 9, 10, 11, 12, 13, 13] },
-          ]}
-          sx={{ height: '100%' }}
-        />
-      </Grid>
+
       <Grid lg={4} md={6} xs={12}>
         <Traffic
           chartSeries={[10, 20, 70]}
@@ -95,56 +104,10 @@ export default async function Page(): Promise<React.JSX.Element> {
           ]}
           sx={{ height: '100%' }}
         />
-      </Grid>
+      </Grid>*/}
       <Grid lg={8} md={12} xs={12}>
-        <LatestOrders
-          orders={[
-            {
-              id: 'ORD-007',
-              customer: { name: 'Ekaterina Tankova' },
-              amount: 30.5,
-              status: 'pending',
-              createdAt: dayjs().subtract(10, 'minutes').toDate(),
-            },
-            {
-              id: 'ORD-006',
-              customer: { name: 'Cao Yu' },
-              amount: 25.1,
-              status: 'delivered',
-              createdAt: dayjs().subtract(10, 'minutes').toDate(),
-            },
-            {
-              id: 'ORD-004',
-              customer: { name: 'Alexa Richardson' },
-              amount: 10.99,
-              status: 'refunded',
-              createdAt: dayjs().subtract(10, 'minutes').toDate(),
-            },
-            {
-              id: 'ORD-003',
-              customer: { name: 'Anje Keizer' },
-              amount: 96.43,
-              status: 'pending',
-              createdAt: dayjs().subtract(10, 'minutes').toDate(),
-            },
-            {
-              id: 'ORD-002',
-              customer: { name: 'Clarke Gillebert' },
-              amount: 32.54,
-              status: 'delivered',
-              createdAt: dayjs().subtract(10, 'minutes').toDate(),
-            },
-            {
-              id: 'ORD-001',
-              customer: { name: 'Adam Denisov' },
-              amount: 16.76,
-              status: 'delivered',
-              createdAt: dayjs().subtract(10, 'minutes').toDate(),
-            },
-          ]}
-          sx={{ height: '100%' }}
-        />
-      </Grid> */}
+        <LatestOrders orders={machineParts} sx={{ height: '100%' }} />
+      </Grid>
     </Grid>
   );
 }

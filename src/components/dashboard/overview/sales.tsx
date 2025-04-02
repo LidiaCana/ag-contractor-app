@@ -31,7 +31,7 @@ export function Sales({ chartSeries, sx }: SalesProps): React.JSX.Element {
             Sync
           </Button>
         }
-        title="Attendance"
+        title="Production"
       />
       <CardContent>
         <Chart height={350} options={chartOptions} series={chartSeries} type="bar" width="100%" />

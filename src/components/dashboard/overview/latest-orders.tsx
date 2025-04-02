@@ -13,20 +13,22 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { ArrowRight as ArrowRightIcon } from '@phosphor-icons/react/dist/ssr/ArrowRight';
-import dayjs from 'dayjs';
 
 const statusMap = {
   pending: { label: 'Pending', color: 'warning' },
   delivered: { label: 'Delivered', color: 'success' },
   refunded: { label: 'Refunded', color: 'error' },
+  'in stock': { label: 'In stock', color: 'success' },
+  'low stock': { label: 'Low stock', color: 'warning' },
+  'out of stock': { label: 'Out of stock', color: 'error' },
 } as const;
 
 export interface Order {
   id: string;
-  customer: { name: string };
-  amount: number;
-  status: 'pending' | 'delivered' | 'refunded';
-  createdAt: Date;
+  description: string;
+  count: number;
+  status: 'pending' | 'in stock' | 'low stock' | 'delivered';
+  cost: string;
 }
 
 export interface LatestOrdersProps {
@@ -37,15 +39,16 @@ export interface LatestOrdersProps {
 export function LatestOrders({ orders = [], sx }: LatestOrdersProps): React.JSX.Element {
   return (
     <Card sx={sx}>
-      <CardHeader title="Latest orders" />
+      <CardHeader title="Part Inventory" />
       <Divider />
       <Box sx={{ overflowX: 'auto' }}>
         <Table sx={{ minWidth: 800 }}>
           <TableHead>
             <TableRow>
-              <TableCell>Order</TableCell>
-              <TableCell>Customer</TableCell>
-              <TableCell sortDirection="desc">Date</TableCell>
+              <TableCell>Id</TableCell>
+              <TableCell>Description</TableCell>
+              <TableCell sortDirection="desc">count</TableCell>
+              <TableCell>cost</TableCell>
               <TableCell>Status</TableCell>
             </TableRow>
           </TableHead>
@@ -56,8 +59,9 @@ export function LatestOrders({ orders = [], sx }: LatestOrdersProps): React.JSX.
               return (
                 <TableRow hover key={order.id}>
                   <TableCell>{order.id}</TableCell>
-                  <TableCell>{order.customer.name}</TableCell>
-                  <TableCell>{dayjs(order.createdAt).format('MMM D, YYYY')}</TableCell>
+                  <TableCell>{order.description}</TableCell>
+                  <TableCell>{order.count}</TableCell>
+                  <TableCell>{order.cost}</TableCell>
                   <TableCell>
                     <Chip color={color} label={label} size="small" />
                   </TableCell>

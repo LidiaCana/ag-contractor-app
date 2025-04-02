@@ -12,6 +12,11 @@ export const paths = {
       report: '/dashboard/attendance/report'
     },
     settings: '/dashboard/settings',
+    precare: {
+      mechanical: '/dashboard/precare/mechanical',
+      supply: '/dashboard/precare/supply',
+      production: '/dashboard/precare/production',
+    },
   },
   errors: { notFound: '/errors/not-found' },
 } as const;
