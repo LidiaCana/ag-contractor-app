@@ -19,6 +19,7 @@ function Scanner() {
 
           if (result) {
             logger.debug(result); // Using a public method to access the scanned data
+            setData(result?.getText() || ''); // Assuming getText() is a public method to access the scanned data
           } else {
             setData('Not Found');
           }
